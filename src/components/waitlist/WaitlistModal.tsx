@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { submitWaitlistEntry } from '../../services/waitlist';
 
 export interface ColorwayOption {
@@ -19,6 +19,7 @@ interface FormErrors {
   email?: string;
   phone?: string;
   consent?: string;
+  server?: string;
 }
 
 export function WaitlistModal({
@@ -33,23 +34,26 @@ export function WaitlistModal({
   const [colorway, setColorway] = useState(initialColorway);
   const [note, setNote] = useState('');
   const [consent, setConsent] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const lastSubmitTimeRef = useRef<number>(0);
 
   const resetForm = useCallback(() => {
     setFullName('');
     setEmail('');
     setPhone('');
     setNote('');
+    setHoneypot('');
     setConsent(false);
     setErrors({});
     setIsSuccess(false);
     setIsSubmitting(false);
   }, []);
 
-  // When modal opens, sync colorway and reset any previous errors
+  // Sync colorway when initialColorway changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setColorway(initialColorway);
@@ -81,23 +85,27 @@ export function WaitlistModal({
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // 1. Full name validation (min 2 chars)
-    if (!fullName.trim()) {
+    // 1. Full name validation (min 2, max 100 chars, non-empty after trim)
+    const trimmedName = fullName.trim();
+    if (!trimmedName) {
       newErrors.fullName = 'Please enter your full name.';
-    } else if (fullName.trim().length < 2) {
+    } else if (trimmedName.length < 2) {
       newErrors.fullName = 'Name must be at least 2 characters.';
+    } else if (trimmedName.length > 100) {
+      newErrors.fullName = 'Name must be less than 100 characters.';
     }
 
-    // 2. Email validation
+    // 2. Email validation (RFC pattern, max 255 chars)
+    const trimmedEmail = email.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.trim()) {
+    if (!trimmedEmail) {
       newErrors.email = 'Please enter your email address.';
-    } else if (!emailRegex.test(email.trim())) {
+    } else if (!emailRegex.test(trimmedEmail) || trimmedEmail.length > 255) {
       newErrors.email = 'Please enter a valid email address.';
     }
 
     // 3. Indian Phone validation (10 digits starting with 6, 7, 8, or 9)
-    const cleanedPhone = phone.replace(/\D/g, '').replace(/^91/, '');
+    const cleanedPhone = phone.replace(/\D/g, '').replace(/^91/, '').replace(/^0/, '');
     const phoneRegex = /^[6-9]\d{9}$/;
     if (!phone.trim()) {
       newErrors.phone = 'Please enter your mobile phone number.';
@@ -110,6 +118,11 @@ export function WaitlistModal({
       newErrors.consent = 'You must agree to be contacted to join the waitlist.';
     }
 
+    // 5. Note length validation (max 1000 chars)
+    if (note && note.length > 1000) {
+      newErrors.server = 'Note cannot exceed 1000 characters.';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -118,23 +131,42 @@ export function WaitlistModal({
     e.preventDefault();
     if (!validate()) return;
 
+    // Rate-limiting check: Prevent multiple rapid-fire submissions (3s cooldown)
+    const now = Date.now();
+    if (now - lastSubmitTimeRef.current < 3000) {
+      return;
+    }
+    lastSubmitTimeRef.current = now;
+
     setIsSubmitting(true);
+    setErrors((prev) => ({ ...prev, server: undefined }));
+
     try {
-      const cleanedPhone = phone.replace(/\D/g, '').replace(/^91/, '');
       const response = await submitWaitlistEntry({
-        fullName: fullName.trim(),
-        email: email.trim().toLowerCase(),
-        phone: cleanedPhone,
+        fullName,
+        email,
+        phone,
         colorway,
-        note: note.trim() || undefined,
+        note: note || undefined,
         consent,
+        honeypot: honeypot || undefined,
       });
 
       if (response.success) {
         setIsSuccess(true);
+      } else {
+        // Backend insert failed -> retain form data and show clean error
+        setErrors((prev) => ({
+          ...prev,
+          server: "We couldn’t save your interest right now. Please try again.",
+        }));
       }
     } catch (err) {
       console.error('[CuddlWear Waitlist] Submission error:', err);
+      setErrors((prev) => ({
+        ...prev,
+        server: "We couldn’t save your interest right now. Please try again.",
+      }));
     } finally {
       setIsSubmitting(false);
     }
@@ -168,11 +200,32 @@ export function WaitlistModal({
               </h2>
               <p className="modal-desc">
                 Reserve your spot for the first limited production run of the CuddlWear Hoodie at{' '}
-                <strong>&#x20B9;1,999</strong>. No payment required today.
+                <strong>&#x20B9;1,999</strong>{' '}
+                <s style={{ opacity: 0.6, fontWeight: 400, fontSize: '0.9em' }}>&#x20B9;2,799</s>{' '}
+                <span className="price-badge" style={{ verticalAlign: 'middle' }}>29% off</span>. No payment required today.
               </p>
             </div>
 
+            {errors.server && (
+              <div className="form-server-error" role="alert">
+                {errors.server}
+              </div>
+            )}
+
             <form className="modal-form" onSubmit={handleSubmit} noValidate>
+              {/* Invisible Honeypot field for bot protection */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="modal-website">Website</label>
+                <input
+                  id="modal-website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               {/* Full Name */}
               <div className="form-group">
                 <label htmlFor="modal-name" className="form-label">
@@ -181,12 +234,13 @@ export function WaitlistModal({
                 <input
                   id="modal-name"
                   type="text"
+                  maxLength={100}
                   className={`form-input ${errors.fullName ? 'has-error' : ''}`}
                   placeholder="e.g. Aryan Sharma"
                   value={fullName}
                   onChange={(e) => {
                     setFullName(e.target.value);
-                    if (errors.fullName) setErrors({ ...errors, fullName: undefined });
+                    if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: undefined }));
                   }}
                 />
                 {errors.fullName && <span className="form-error">{errors.fullName}</span>}
@@ -200,12 +254,13 @@ export function WaitlistModal({
                 <input
                   id="modal-email"
                   type="email"
+                  maxLength={255}
                   className={`form-input ${errors.email ? 'has-error' : ''}`}
                   placeholder="aryan@example.com"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    if (errors.email) setErrors({ ...errors, email: undefined });
+                    if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
                   }}
                 />
                 {errors.email && <span className="form-error">{errors.email}</span>}
@@ -221,12 +276,13 @@ export function WaitlistModal({
                   <input
                     id="modal-phone"
                     type="tel"
+                    maxLength={15}
                     className={`form-input phone-input ${errors.phone ? 'has-error' : ''}`}
                     placeholder="98765 43210"
                     value={phone}
                     onChange={(e) => {
                       setPhone(e.target.value);
-                      if (errors.phone) setErrors({ ...errors, phone: undefined });
+                      if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }));
                     }}
                   />
                 </div>
@@ -260,6 +316,7 @@ export function WaitlistModal({
                   id="modal-note"
                   className="form-textarea"
                   rows={2}
+                  maxLength={1000}
                   placeholder="Any size preference or question for our team?"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
@@ -275,7 +332,7 @@ export function WaitlistModal({
                     checked={consent}
                     onChange={(e) => {
                       setConsent(e.target.checked);
-                      if (errors.consent) setErrors({ ...errors, consent: undefined });
+                      if (errors.consent) setErrors((prev) => ({ ...prev, consent: undefined }));
                     }}
                   />
                   <span>I agree to be contacted about CuddlWear pre-orders.</span>
@@ -294,7 +351,7 @@ export function WaitlistModal({
                 className="btn-primary modal-submit-btn"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Reserving your spot...' : 'Join the Waitlist — ₹1,999'}
+                {isSubmitting ? 'Reserving your spot...' : <>Join the Waitlist — &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s></>}
               </button>
             </form>
           </>
@@ -311,7 +368,10 @@ export function WaitlistModal({
               </div>
               <div className="success-detail-row">
                 <span className="success-detail-key">Price</span>
-                <span className="success-detail-val">&#x20B9;1,999</span>
+                <span className="success-detail-val">
+                    &#x20B9;1,999{' '}
+                    <s style={{ opacity: 0.55, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                  </span>
               </div>
               <div className="success-detail-row">
                 <span className="success-detail-key">Status</span>
@@ -320,7 +380,7 @@ export function WaitlistModal({
             </div>
 
             <p className="success-demo-notice">
-              Your interest has been saved on this device.
+              We’ll contact you when pre-orders open.
             </p>
 
             <button type="button" className="btn-primary modal-done-btn" onClick={handleDone}>

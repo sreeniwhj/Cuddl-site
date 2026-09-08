@@ -1,74 +1,161 @@
-/**
- * CuddlWear Waitlist Service (Frontend-Only / Demo Mode)
- *
- * Persists waitlist leads to localStorage under the key 'cuddlwear_waitlist_leads'.
- * Preserves existing entries and appends new entries in a JSON array.
- */
+import { supabase } from '../lib/supabase';
+import { DISPLAY_TO_DB_COLORWAY, DB_TO_DISPLAY_COLORWAY } from '../data/colorways';
 
 export interface WaitlistEntry {
-  id: string;
+  id?: string;
   fullName: string;
   email: string;
   phone: string;
   colorway: string;
   note?: string;
   consent: boolean;
-  createdAt: string;
+  createdAt?: string;
 }
 
-export const WAITLIST_STORAGE_KEY = 'cuddlwear_waitlist_leads';
+export interface SubmitWaitlistParams extends Omit<WaitlistEntry, 'id' | 'createdAt'> {
+  honeypot?: string;
+}
+
+export interface SubmitResult {
+  success: boolean;
+  isDuplicate?: boolean;
+  data?: WaitlistEntry;
+  error?: string;
+}
+
+const ALLOWED_DB_COLORWAYS = new Set([
+  'Ash Grey',
+  'Sand Beige',
+  'Midnight Black',
+  'Powder Blue',
+]);
 
 /**
- * Retrieve all stored waitlist entries from localStorage safely.
+ * Normalizes an Indian phone number to exactly 10 digits.
  */
-export function getWaitlistEntries(): WaitlistEntry[] {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return [];
+export function normalizePhone(raw: string): string {
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return digits.substring(2);
   }
-  try {
-    const raw = window.localStorage.getItem(WAITLIST_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error('[CuddlWear Waitlist] Error reading from localStorage:', err);
-    return [];
+  if (digits.length === 11 && digits.startsWith('0')) {
+    return digits.substring(1);
   }
+  return digits;
 }
 
 /**
- * Save a new waitlist entry to localStorage.
+ * Insert a waitlist entry into Supabase with normalization, duplicate protection, and anti-abuse safeguards.
  */
 export async function submitWaitlistEntry(
-  data: Omit<WaitlistEntry, 'id' | 'createdAt'>
-): Promise<{ success: boolean; data: WaitlistEntry }> {
-  // Simulate standard network latency (300ms)
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  const newEntry: WaitlistEntry = {
-    ...data,
-    id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-    createdAt: new Date().toISOString(),
-  };
-
-  if (typeof window !== 'undefined' && window.localStorage) {
-    try {
-      const existingEntries = getWaitlistEntries();
-      const updatedList = [newEntry, ...existingEntries];
-      window.localStorage.setItem(WAITLIST_STORAGE_KEY, JSON.stringify(updatedList));
-      console.log(
-        `[CuddlWear Waitlist] Saved lead to localStorage (${WAITLIST_STORAGE_KEY}). Total leads: ${updatedList.length}`,
-        newEntry
-      );
-    } catch (err) {
-      console.error('[CuddlWear Waitlist] Error writing to localStorage:', err);
-    }
-  } else {
-    console.warn('[CuddlWear Waitlist] window.localStorage is unavailable.');
+  params: SubmitWaitlistParams
+): Promise<SubmitResult> {
+  // Anti-bot honeypot check: If filled, silently treat as success without calling DB
+  if (params.honeypot && params.honeypot.trim().length > 0) {
+    console.warn('[Waitlist] Honeypot triggered, ignoring spam submission.');
+    return {
+      success: true,
+      data: {
+        fullName: params.fullName,
+        email: params.email,
+        phone: params.phone,
+        colorway: params.colorway,
+        consent: params.consent,
+      },
+    };
   }
 
-  return {
-    success: true,
-    data: newEntry,
-  };
+  // 1. Normalize data
+  const normalizedName = params.fullName.trim();
+  const normalizedEmail = params.email.trim().toLowerCase();
+  const normalizedPhone = normalizePhone(params.phone);
+  
+  // Map display name to database allowed value
+  const mappedDbColorway = DISPLAY_TO_DB_COLORWAY[params.colorway] || params.colorway;
+  const dbColorway = ALLOWED_DB_COLORWAYS.has(mappedDbColorway)
+    ? mappedDbColorway
+    : 'Ash Grey';
+  
+  const displayColorway = DB_TO_DISPLAY_COLORWAY[dbColorway] || dbColorway;
+
+  const normalizedMessage = params.note && params.note.trim().length > 0
+    ? params.note.trim().substring(0, 1000)
+    : null;
+  const timestamp = new Date().toISOString();
+
+  // 2. Client-side sanity checks before network call
+  if (normalizedName.length < 2 || normalizedName.length > 100) {
+    return { success: false, error: 'Full name must be between 2 and 100 characters.' };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail) || normalizedEmail.length > 255) {
+    return { success: false, error: 'Please provide a valid email address.' };
+  }
+  if (!/^[6-9]\d{9}$/.test(normalizedPhone)) {
+    return { success: false, error: 'Please provide a valid 10-digit Indian mobile number.' };
+  }
+  if (!params.consent) {
+    return { success: false, error: 'Consent is required to join the waitlist.' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('waitlist_entries')
+      .insert([
+        {
+          full_name: normalizedName,
+          email: normalizedEmail,
+          phone: normalizedPhone,
+          preferred_colorway: dbColorway,
+          message: normalizedMessage,
+          consent_given: params.consent,
+          consent_timestamp: timestamp,
+          status: 'pending',
+        },
+      ]);
+
+    if (error) {
+      // Safe duplicate submission handling (Postgres unique constraint violation)
+      if (error.code === '23505' || error.message.includes('unique') || error.message.includes('duplicate')) {
+        console.info('[Waitlist] Duplicate lead received, gracefully handled.');
+        return {
+          success: true,
+          isDuplicate: true,
+          data: {
+            fullName: normalizedName,
+            email: normalizedEmail,
+            phone: normalizedPhone,
+            colorway: displayColorway,
+            consent: params.consent,
+            createdAt: timestamp,
+          },
+        };
+      }
+
+      console.error('[Supabase Waitlist] Insert error:', error.message);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        fullName: normalizedName,
+        email: normalizedEmail,
+        phone: normalizedPhone,
+        colorway: displayColorway,
+        note: normalizedMessage || undefined,
+        consent: params.consent,
+        id: `lead_${Date.now()}`,
+        createdAt: timestamp,
+      },
+    };
+  } catch (err: any) {
+    console.error('[Supabase Waitlist] Unexpected network error:', err);
+    return {
+      success: false,
+      error: err?.message || 'Network error',
+    };
+  }
 }
