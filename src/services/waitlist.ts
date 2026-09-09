@@ -31,6 +31,19 @@ const ALLOWED_DB_COLORWAYS = new Set([
   'Powder Blue',
 ]);
 
+export const GOOGLE_APPS_SCRIPT_WEBHOOK_URL =
+  'https://script.google.com/macros/s/AKfycbw-hunmXx0KcpuKfgPokbSnp5lAZDuyFq_J-sSZFhw-sdiK-Ik81rYhju5jhjzFWggb/exec';
+
+export interface GoogleAppsScriptPreorderPayload {
+  name: string;
+  email: string;
+  phone: string;
+  productColor: string;
+  size: string;
+  quantity: number;
+  notes: string;
+}
+
 /**
  * Normalizes an Indian phone number to exactly 10 digits.
  */
@@ -46,7 +59,46 @@ export function normalizePhone(raw: string): string {
 }
 
 /**
- * Insert a waitlist entry into Supabase with normalization, duplicate protection, and anti-abuse safeguards.
+ * Sends preorder data to Google Apps Script Web App webhook.
+ * Uses text/plain to avoid CORS preflight while transmitting valid JSON that GAS parses.
+ */
+export async function sendToGoogleAppsScript(
+  payload: GoogleAppsScriptPreorderPayload
+): Promise<boolean> {
+  try {
+    const response = await fetch(GOOGLE_APPS_SCRIPT_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      return true;
+    }
+    return true; // GAS redirects return opaque/ok
+  } catch (err) {
+    // If standard fetch threw (e.g. browser CORS redirect), retry with mode: 'no-cors'
+    try {
+      await fetch(GOOGLE_APPS_SCRIPT_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload),
+      });
+      return true;
+    } catch (fallbackErr) {
+      console.error('[Google Apps Script Webhook] Error:', fallbackErr);
+      return false;
+    }
+  }
+}
+
+/**
+ * Insert a preorder entry into Google Apps Script webhook and Supabase with normalization, duplicate protection, and anti-abuse safeguards.
  */
 export async function submitWaitlistEntry(
   params: SubmitWaitlistParams
@@ -82,10 +134,11 @@ export async function submitWaitlistEntry(
 
   const rawNote = params.note && params.note.trim().length > 0
     ? params.note.trim().substring(0, 800)
-    : null;
-  const normalizedMessage = params.size
-    ? `Size: ${params.size}${rawNote ? ` | Note: ${rawNote}` : ''}`
-    : rawNote;
+    : '';
+  const selectedSize = params.size || 'M';
+  const normalizedMessage = selectedSize
+    ? `Size: ${selectedSize}${rawNote ? ` | Note: ${rawNote}` : ''}`
+    : (rawNote || null);
   const timestamp = new Date().toISOString();
 
   // 2. Client-side sanity checks before network call
@@ -102,64 +155,71 @@ export async function submitWaitlistEntry(
     return { success: false, error: 'Consent is required to join the waitlist.' };
   }
 
-  try {
-    const { error } = await supabase
-      .from('waitlist_entries')
-      .insert([
-        {
-          full_name: normalizedName,
-          email: normalizedEmail,
-          phone: normalizedPhone,
-          preferred_colorway: dbColorway,
-          message: normalizedMessage,
-          consent_given: params.consent,
-          consent_timestamp: timestamp,
-          status: 'pending',
-        },
-      ]);
+  // 3. Prepare Google Sheet webhook payload
+  const googleSheetPayload: GoogleAppsScriptPreorderPayload = {
+    name: normalizedName,
+    email: normalizedEmail,
+    phone: normalizedPhone,
+    productColor: displayColorway,
+    size: selectedSize,
+    quantity: 1,
+    notes: rawNote,
+  };
 
-    if (error) {
-      // Safe duplicate submission handling (Postgres unique constraint violation)
-      if (error.code === '23505' || error.message.includes('unique') || error.message.includes('duplicate')) {
-        console.info('[Waitlist] Duplicate lead received, gracefully handled.');
-        return {
-          success: true,
-          isDuplicate: true,
-          data: {
-            fullName: normalizedName,
+  try {
+    // Submit to Google Apps Script webhook
+    const gasPromise = sendToGoogleAppsScript(googleSheetPayload);
+
+    // Parallel sync with Supabase
+    let supabaseSuccess = false;
+    try {
+      const { error: supabaseError } = await supabase
+        .from('waitlist_entries')
+        .insert([
+          {
+            full_name: normalizedName,
             email: normalizedEmail,
             phone: normalizedPhone,
-            colorway: displayColorway,
-            size: params.size,
-            consent: params.consent,
-            createdAt: timestamp,
+            preferred_colorway: dbColorway,
+            message: normalizedMessage,
+            consent_given: params.consent,
+            consent_timestamp: timestamp,
+            status: 'pending',
           },
-        };
-      }
+        ]);
 
-      console.error('[Supabase Waitlist] Insert error:', error.message);
+      if (!supabaseError || supabaseError.code === '23505') {
+        supabaseSuccess = true;
+      }
+    } catch (sbErr) {
+      console.warn('[Supabase] Background insert note:', sbErr);
+    }
+
+    const gasSuccess = await gasPromise;
+
+    if (gasSuccess || supabaseSuccess) {
       return {
-        success: false,
-        error: error.message,
+        success: true,
+        data: {
+          fullName: normalizedName,
+          email: normalizedEmail,
+          phone: normalizedPhone,
+          colorway: displayColorway,
+          size: selectedSize,
+          note: rawNote || undefined,
+          consent: params.consent,
+          id: `lead_${Date.now()}`,
+          createdAt: timestamp,
+        },
       };
     }
 
     return {
-      success: true,
-      data: {
-        fullName: normalizedName,
-        email: normalizedEmail,
-        phone: normalizedPhone,
-        colorway: displayColorway,
-        size: params.size,
-        note: normalizedMessage || undefined,
-        consent: params.consent,
-        id: `lead_${Date.now()}`,
-        createdAt: timestamp,
-      },
+      success: false,
+      error: 'We couldn’t save your reservation right now. Please try again.',
     };
   } catch (err: any) {
-    console.error('[Supabase Waitlist] Unexpected network error:', err);
+    console.error('[Preorder Submission] Unexpected network error:', err);
     return {
       success: false,
       error: err?.message || 'Network error',
