@@ -21,7 +21,7 @@ export function SiteFooter() {
               <span>Cuddl.</span>
             </div>
             <p className="footer-tagline">
-              Comfort designed for focus. 450 GSM sensory focus hoodie with right-wrist squish ball.
+              Comfort designed for focus. Sensory focus hoodie crafted from buttery soft fabric with removable stress ball.
             </p>
             <div className="footer-origin-badge">
               <span className="origin-dot"></span>
@@ -43,7 +43,7 @@ export function SiteFooter() {
                 className="footer-link-btn"
                 onClick={() => openWaitlist()}
               >
-                Join the Waitlist
+                Preorder Now
               </button>
             </div>
           </div>
@@ -52,16 +52,16 @@ export function SiteFooter() {
           <div>
             <div className="footer-col-title">The Hoodie</div>
             <div className="footer-links">
-              <Link to="/why-this-works">450 GSM Plush Fabric</Link>
+              <Link to="/why-this-works">Buttery Soft Fabric</Link>
               <Link to="/why-this-works">Grounding Construction</Link>
-              <Link to="/why-this-works">Right-Wrist Squish Ball</Link>
+              <Link to="/why-this-works">Removable Stress Ball</Link>
               <Link to="/shop">4 Curated Colorways</Link>
               <button
                 type="button"
                 className="footer-link-btn"
                 onClick={() => openWaitlist()}
               >
-                Price: &#x20B9;1,999 <s style={{ opacity: 0.55, fontSize: '0.85em' }}>&#x20B9;2,799</s> &mdash; 29% off &middot; Free Delivery
+                Price: &#x20B9;1,999 <s style={{ opacity: 0.55, fontSize: '0.85em' }}>&#x20B9;2,799</s> &mdash; 29% off
               </button>
             </div>
           </div>

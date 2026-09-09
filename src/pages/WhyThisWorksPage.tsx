@@ -39,10 +39,10 @@ export function WhyThisWorksPage() {
                   Plush, breathable fabric wraps around you like a calming hug. Your body gets the signal to relax.
                 </p>
                 <p className="why-block-sub">
-                  At 450 GSM, our heavyweight cotton-polyester fleece creates a gentle cocoon that reduces sensory sensitivity to draft, harsh air conditioning, and unpredictable ambient stimuli.
+                  Crafted from buttery soft fabric for a gentle, comfortable feel, creating a soothing cocoon that reduces sensory sensitivity to draft, harsh air conditioning, and unpredictable ambient stimuli.
                 </p>
                 <div className="why-block-pills">
-                  <span className="pill-tag">450 GSM Plush Fleece</span>
+                  <span className="pill-tag">Buttery Soft Fabric</span>
                   <span className="pill-tag">Thermal Regulation</span>
                   <span className="pill-tag">Sensory Cocoon</span>
                 </div>
@@ -71,7 +71,7 @@ export function WhyThisWorksPage() {
                   A soft, breathable cotton-polyester fabric designed for a comfortable, grounding feel.
                 </p>
                 <p className="why-block-sub">
-                  The reassuring physical presence and gentle drape of our heavy 450 GSM fleece help bring you back down, easing restlessness, improving focus, and helping you transition smoothly between tasks.
+                  The reassuring physical presence and gentle drape of our buttery soft fabric help bring you back down, easing restlessness, improving focus, and helping you transition smoothly between tasks.
                 </p>
                 <div className="why-block-pills">
                   <span className="pill-tag">Grounding Drape</span>
@@ -103,11 +103,11 @@ export function WhyThisWorksPage() {
                   The relief is built into your sleeves, invisible to everyone else, always there when you need it.
                 </p>
                 <p className="why-block-sub">
-                  Instead of carrying conspicuous stress balls or fidget toys that click and distract others in quiet rooms, our ergonomic right-wrist squish ball opening lets you squeeze, squeeze, and decompress silently.
+                  Instead of carrying conspicuous stress balls or fidget toys that click and distract others in quiet rooms, our removable stress ball can be positioned on either side of your wrist so you can choose the placement that feels right for you.
                 </p>
                 <div className="why-block-pills">
-                  <span className="pill-tag">Silent Squish Ball</span>
-                  <span className="pill-tag">Cuff Integration</span>
+                  <span className="pill-tag">Removable Stress Ball</span>
+                  <span className="pill-tag">Dual Wrist Placement</span>
                   <span className="pill-tag">100% Discreet</span>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export function WhyThisWorksPage() {
                 <div className="why-visual-frame">
                   <img
                     src="/Untitled Project - illustrationimage (6).png"
-                    alt="CuddlWear sleeve squish ball opening"
+                    alt="CuddlWear sleeve removable stress ball opening"
                     loading="lazy"
                   />
                 </div>
@@ -132,7 +132,7 @@ export function WhyThisWorksPage() {
             <div className="callout-icon">&#129782;</div>
             <h2>Built For Your Existing Habits</h2>
             <p>
-              If you already reach for fidget toys or stress balls, you probably know what helps you. CuddlWear builds that same sense of relief into something you can wear throughout the day, while giving you a full kit of the fidget items you already use.
+              If you already reach for fidget toys or stress balls, you probably know what helps you. CuddlWear builds that same sense of relief directly into something you can wear throughout the day.
             </p>
             <div className="callout-specs">
               <div className="cs-item">
@@ -170,13 +170,12 @@ export function WhyThisWorksPage() {
               Ready to feel<br /><em>grounded?</em>
             </h2>
             <p className="cta-subtitle">
-              Join the pre-order waitlist today.{' '}
+              Pre-order your hoodie today.{' '}
               <span className="price-sale-group" style={{ display: 'inline-flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <strong>&#x20B9;1,999</strong>
                 <s className="price-was">&#x20B9;2,799</s>
                 <span className="price-badge">29% off</span>
-              </span>{' '}
-              with free delivery anywhere in India.
+              </span>
             </p>
             <div className="cta-actions">
               <button
@@ -184,7 +183,7 @@ export function WhyThisWorksPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Join the Waitlist &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
               <Link to="/shop" className="btn-ghost">
                 Shop 4 Colours

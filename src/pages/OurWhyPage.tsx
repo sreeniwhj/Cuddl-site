@@ -41,7 +41,7 @@ export function OurWhyPage() {
             <div className="story-narrative-text">
               <h2>One Simple Idea: Comfort in the Cuff</h2>
               <p>
-                So we put a soft squish ball right into the wrist opening, where your hand naturally rests. When tension builds during a difficult conversation, a long lecture, or an overstimulating commute, relief is already there. No unzipping a bag, no noisy toys on a desk, and no awkward stares.
+                So we designed a removable stress ball right into the wrist cuff, easily positioned on either side for the comfort you prefer. When tension builds during a difficult conversation, a long lecture, or an overstimulating commute, relief is already there. No unzipping a bag, no noisy toys on a desk, and no awkward stares.
               </p>
 
               <h2>Designed for Everyday Overwhelm</h2>
@@ -58,7 +58,7 @@ export function OurWhyPage() {
                 <div className="value-card">
                   <div className="value-num">02</div>
                   <h3>Grounding Sensory Comfort</h3>
-                  <p>450 GSM plush fabric with a soft cotton-polyester construction and sleeve squish ball integration.</p>
+                  <p>Crafted from buttery soft fabric for a gentle, comfortable feel, featuring a removable stress ball.</p>
                 </div>
                 <div className="value-card">
                   <div className="value-num">03</div>
@@ -69,7 +69,7 @@ export function OurWhyPage() {
                       <s className="price-was">&#x20B9;2,799</s>
                       <span className="price-badge">29% off</span>
                     </span>{' '}
-                    with free delivery across India — quality made accessible.
+                    — quality made accessible.
                   </p>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export function OurWhyPage() {
               Experience the comfort<br /><em>for yourself.</em>
             </h2>
             <p className="cta-subtitle">
-              Pre-order waitlist is now open for our initial release. Four timeless shades, free shipping across India.
+              Pre-orders are now open for our initial release across four timeless shades.
             </p>
             <div className="cta-actions">
               <button
@@ -106,7 +106,7 @@ export function OurWhyPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Join the Waitlist &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
               <Link to="/shop" className="btn-ghost">
                 View the 4 colours

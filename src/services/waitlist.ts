@@ -7,6 +7,7 @@ export interface WaitlistEntry {
   email: string;
   phone: string;
   colorway: string;
+  size?: string;
   note?: string;
   consent: boolean;
   createdAt?: string;
@@ -60,6 +61,7 @@ export async function submitWaitlistEntry(
         email: params.email,
         phone: params.phone,
         colorway: params.colorway,
+        size: params.size,
         consent: params.consent,
       },
     };
@@ -78,9 +80,12 @@ export async function submitWaitlistEntry(
   
   const displayColorway = DB_TO_DISPLAY_COLORWAY[dbColorway] || dbColorway;
 
-  const normalizedMessage = params.note && params.note.trim().length > 0
-    ? params.note.trim().substring(0, 1000)
+  const rawNote = params.note && params.note.trim().length > 0
+    ? params.note.trim().substring(0, 800)
     : null;
+  const normalizedMessage = params.size
+    ? `Size: ${params.size}${rawNote ? ` | Note: ${rawNote}` : ''}`
+    : rawNote;
   const timestamp = new Date().toISOString();
 
   // 2. Client-side sanity checks before network call
@@ -125,6 +130,7 @@ export async function submitWaitlistEntry(
             email: normalizedEmail,
             phone: normalizedPhone,
             colorway: displayColorway,
+            size: params.size,
             consent: params.consent,
             createdAt: timestamp,
           },
@@ -145,6 +151,7 @@ export async function submitWaitlistEntry(
         email: normalizedEmail,
         phone: normalizedPhone,
         colorway: displayColorway,
+        size: params.size,
         note: normalizedMessage || undefined,
         consent: params.consent,
         id: `lead_${Date.now()}`,

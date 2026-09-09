@@ -7,11 +7,14 @@ export interface ColorwayOption {
   bg: string;
 }
 
+export const AVAILABLE_SIZES = ['S', 'M', 'L', 'XL', 'XXL'] as const;
+
 interface WaitlistModalProps {
   isOpen: boolean;
   onClose: () => void;
   availableColorways: ColorwayOption[];
   initialColorway: string;
+  initialSize?: string;
 }
 
 interface FormErrors {
@@ -27,11 +30,13 @@ export function WaitlistModal({
   onClose,
   availableColorways,
   initialColorway,
+  initialSize = 'M',
 }: WaitlistModalProps) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [colorway, setColorway] = useState(initialColorway);
+  const [size, setSize] = useState(initialSize);
   const [note, setNote] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
@@ -53,13 +58,16 @@ export function WaitlistModal({
     setIsSubmitting(false);
   }, []);
 
-  // Sync colorway when initialColorway changes or modal opens
+  // Sync colorway and size when initial props change or modal opens
   useEffect(() => {
     if (isOpen) {
       setColorway(initialColorway);
+      if (initialSize) {
+        setSize(initialSize);
+      }
       setErrors({});
     }
-  }, [isOpen, initialColorway]);
+  }, [isOpen, initialColorway, initialSize]);
 
   // Handle closing modal
   const handleClose = useCallback(() => {
@@ -147,6 +155,7 @@ export function WaitlistModal({
         email,
         phone,
         colorway,
+        size,
         note: note || undefined,
         consent,
         honeypot: honeypot || undefined,
@@ -196,13 +205,13 @@ export function WaitlistModal({
             <div className="modal-header">
               <span className="modal-eyebrow">Priority Access</span>
               <h2 id="waitlist-title" className="modal-title">
-                Join the Waitlist
+                Preorder Now
               </h2>
               <p className="modal-desc">
                 Reserve your spot for the first limited production run of the CuddlWear Hoodie at{' '}
                 <strong>&#x20B9;1,999</strong>{' '}
                 <s style={{ opacity: 0.6, fontWeight: 400, fontSize: '0.9em' }}>&#x20B9;2,799</s>{' '}
-                <span className="price-badge" style={{ verticalAlign: 'middle' }}>29% off</span>. No payment required today.
+                <span className="price-badge" style={{ verticalAlign: 'middle' }}>29% off</span>.
               </p>
             </div>
 
@@ -307,6 +316,25 @@ export function WaitlistModal({
                 </div>
               </div>
 
+              {/* Selected Size */}
+              <div className="form-group">
+                <label className="form-label">
+                  Selected Size: <strong>{size}</strong>
+                </label>
+                <div className="modal-size-pills">
+                  {AVAILABLE_SIZES.map((sz) => (
+                    <button
+                      type="button"
+                      key={sz}
+                      className={`modal-size-pill ${size === sz ? 'selected' : ''}`}
+                      onClick={() => setSize(sz)}
+                    >
+                      <span>{sz}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Optional Note */}
               <div className="form-group">
                 <label htmlFor="modal-note" className="form-label">
@@ -351,15 +379,15 @@ export function WaitlistModal({
                 className="btn-primary modal-submit-btn"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Reserving your spot...' : <>Join the Waitlist — &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s></>}
+                {isSubmitting ? 'Reserving your spot...' : <>Preorder Now — &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s></>}
               </button>
             </form>
           </>
         ) : (
           <div className="modal-success-view">
             <div className="success-icon">&#10003;</div>
-            <h2 className="success-title">You’re on the CuddlWear waitlist.</h2>
-            <p className="success-subtitle">We’ll contact you when pre-orders open.</p>
+            <h2 className="success-title">Your pre-order reservation is received.</h2>
+            <p className="success-subtitle">We’ll contact you when pre-orders are ready for dispatch.</p>
 
             <div className="success-details-card">
               <div className="success-detail-row">
@@ -367,11 +395,15 @@ export function WaitlistModal({
                 <span className="success-detail-val">{colorway}</span>
               </div>
               <div className="success-detail-row">
+                <span className="success-detail-key">Size</span>
+                <span className="success-detail-val">{size}</span>
+              </div>
+              <div className="success-detail-row">
                 <span className="success-detail-key">Price</span>
                 <span className="success-detail-val">
-                    &#x20B9;1,999{' '}
-                    <s style={{ opacity: 0.55, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
-                  </span>
+                  &#x20B9;1,999{' '}
+                  <s style={{ opacity: 0.55, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                </span>
               </div>
               <div className="success-detail-row">
                 <span className="success-detail-key">Status</span>
@@ -380,7 +412,7 @@ export function WaitlistModal({
             </div>
 
             <p className="success-demo-notice">
-              We’ll contact you when pre-orders open.
+              We'll contact you with fulfillment updates.
             </p>
 
             <button type="button" className="btn-primary modal-done-btn" onClick={handleDone}>

@@ -32,7 +32,7 @@ export function SiteHeader() {
     <>
       {/* Top Banner */}
       <div className="topbar">
-        <strong>Launching Soon</strong> &#8212; Pre-order waitlist open &middot; Free shipping across India
+        <strong>Launching Soon</strong> &#8212; Pre-orders now open
       </div>
 
       {/* Main Sticky Navigation */}
@@ -106,7 +106,7 @@ export function SiteHeader() {
                 id="nav-preorder-btn"
                 onClick={() => openWaitlist()}
               >
-                Join the Waitlist &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
             </div>
 
@@ -182,7 +182,7 @@ export function SiteHeader() {
                     openWaitlist();
                   }}
                 >
-                  Join the Waitlist &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                  Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
                 </button>
               </div>
             </div>

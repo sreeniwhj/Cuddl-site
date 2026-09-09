@@ -19,7 +19,7 @@ export function ShopPage() {
               Four colours.<br /><em>One purpose: calm.</em>
             </h1>
             <p className="page-lead">
-              Every CuddlWear hoodie features 450 GSM plush fabric, a right-wrist squish ball opening, and a soft, breathable cotton-polyester fabric designed for a comfortable, grounding feel. Choose your shade below.
+              Every CuddlWear hoodie features buttery soft fabric, a removable stress ball that can be positioned on either side of your wrist, and a gentle, grounding feel. Choose your shade below.
             </p>
             <div className="shop-meta-strip">
               <div className="shop-meta-item">
@@ -29,10 +29,6 @@ export function ShopPage() {
                   <s className="price-was">&#x20B9;2,799</s>
                   <span className="price-badge">29% off</span>
                 </span>
-              </div>
-              <div className="shop-meta-divider">&middot;</div>
-              <div className="shop-meta-item">
-                <strong>Shipping:</strong> Free across India
               </div>
               <div className="shop-meta-divider">&middot;</div>
               <div className="shop-meta-item">
@@ -84,9 +80,9 @@ export function ShopPage() {
                   </p>
 
                   <div className="product-card-specs">
-                    <span className="card-spec-tag">450 GSM</span>
+                    <span className="card-spec-tag">Buttery Soft</span>
                     <span className="card-spec-tag">Grounding Feel</span>
-                    <span className="card-spec-tag">Wrist Ball</span>
+                    <span className="card-spec-tag">Removable Ball</span>
                   </div>
 
                   <div className="product-card-actions">
@@ -101,7 +97,7 @@ export function ShopPage() {
                       className="btn-primary product-card-btn"
                       onClick={() => openWaitlist(product.name)}
                     >
-                      Join Waitlist
+                      Preorder Now
                     </button>
                   </div>
                 </div>
@@ -116,26 +112,14 @@ export function ShopPage() {
         <div className="container">
           <div className="shop-benefits-grid">
             <div className="benefit-col">
-              <div className="benefit-icon">&#128230;</div>
-              <h3>Free Shipping Across India</h3>
-              <p>We deliver nationwide with zero added shipping fees on all waitlist pre-orders.</p>
-            </div>
-            <div className="benefit-col">
-              <div className="benefit-icon">&#9878;&#65039;</div>
-              <h3>Honest, Flat Pricing</h3>
-              <p>
-                <span className="price-sale-group" style={{ display: 'inline-flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <strong>&#x20B9;1,999</strong>
-                  <s className="price-was">&#x20B9;2,799</s>
-                  <span className="price-badge">29% off</span>
-                </span>{' '}
-                No hidden fees, no markup games, made to be your daily default.
-              </p>
+              <div className="benefit-icon">&#129782;</div>
+              <h3>Removable Stress Ball</h3>
+              <p>Move it to either side of your wrist for the comfort you prefer.</p>
             </div>
             <div className="benefit-col">
               <div className="benefit-icon">&#127981;</div>
               <h3>Made in Bengaluru</h3>
-              <p>Crafted locally with high-density 450 GSM plush fleece and precision stitching.</p>
+              <p>Crafted locally with buttery soft fabric and precision stitching.</p>
             </div>
           </div>
         </div>
@@ -151,7 +135,7 @@ export function ShopPage() {
               Ready to feel<br /><em>the difference?</em>
             </h2>
             <p className="cta-subtitle">
-              Join the pre-order waitlist today. No payment needed now — we will reach out as soon as your hoodie is ready to ship.
+              Pre-order your hoodie today. We will reach out as soon as your hoodie is ready to ship.
             </p>
             <div className="cta-actions">
               <button
@@ -159,7 +143,7 @@ export function ShopPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Join the Waitlist &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
             </div>
           </div>

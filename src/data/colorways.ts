@@ -1,6 +1,6 @@
 export interface Colorway {
   id: string;
-  name: string; // Display name: Ash, Beige, Black, Sky
+  name: string; // Display name: Ash, Oat, Onyx, Sky
   dbValue: string; // Supabase internal database value
   bg: string;
   img: string;
@@ -24,22 +24,22 @@ export const COLORWAYS: Colorway[] = [
   },
   {
     id: 'swatch-beige',
-    name: 'Beige',
+    name: 'Oat',
     dbValue: 'Sand Beige',
     bg: '#F0EAD6',
     img: '/Untitled Project - illustrationimage (5).png',
-    alt: 'CuddlWear Signature Hoodie in Beige',
+    alt: 'CuddlWear Signature Hoodie in Oat',
     slug: 'sand-beige',
     tagline: 'Warm, grounding, calm aesthetic',
     description: 'A comforting, warm earth tone designed to soothe the senses. Gives an effortless, relaxed look whether at your desk or winding down.'
   },
   {
     id: 'swatch-black',
-    name: 'Black',
+    name: 'Onyx',
     dbValue: 'Midnight Black',
     bg: '#1E1E1E',
     img: '/Untitled Project - illustrationimage (6).png',
-    alt: 'CuddlWear Signature Hoodie in Black',
+    alt: 'CuddlWear Signature Hoodie in Onyx',
     slug: 'midnight-black',
     tagline: 'Sleek, invisible focus, effortless style',
     description: 'Deep, matte, and discreet. The ultimate low-profile tool — looks like a classic staple while packing full sensory calming support.'
@@ -59,9 +59,11 @@ export const COLORWAYS: Colorway[] = [
 
 export const DISPLAY_TO_DB_COLORWAY: Record<string, string> = {
   'Ash': 'Ash Grey',
+  'Oat': 'Sand Beige',
+  'Onyx': 'Midnight Black',
+  'Sky': 'Powder Blue',
   'Beige': 'Sand Beige',
   'Black': 'Midnight Black',
-  'Sky': 'Powder Blue',
   'Ash Grey': 'Ash Grey',
   'Sand Beige': 'Sand Beige',
   'Midnight Black': 'Midnight Black',
@@ -70,12 +72,14 @@ export const DISPLAY_TO_DB_COLORWAY: Record<string, string> = {
 
 export const DB_TO_DISPLAY_COLORWAY: Record<string, string> = {
   'Ash Grey': 'Ash',
-  'Sand Beige': 'Beige',
-  'Midnight Black': 'Black',
+  'Sand Beige': 'Oat',
+  'Midnight Black': 'Onyx',
   'Powder Blue': 'Sky',
   'Ash': 'Ash',
-  'Beige': 'Beige',
-  'Black': 'Black',
+  'Oat': 'Oat',
+  'Onyx': 'Onyx',
+  'Beige': 'Oat',
+  'Black': 'Onyx',
   'Sky': 'Sky',
 };
 
