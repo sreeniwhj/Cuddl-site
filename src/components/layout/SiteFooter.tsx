@@ -84,8 +84,14 @@ export function SiteFooter() {
           </div>
           <div className="footer-social">
             <a href="mailto:hello@cuddlwear.in">hello@cuddlwear.in</a>
-            <a href="#" aria-label="Instagram">Instagram</a>
-            <a href="#" aria-label="Twitter">Twitter</a>
+            <a
+              href="https://www.instagram.com/cuddlwear?stkn=NnZkN3BwMnZra2Ew"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              Instagram
+            </a>
           </div>
         </div>
       </div>

@@ -1618,6 +1618,202 @@ button {
   margin-bottom: 16px;
 }
 
+/* ── Size label row (label + Size Chart trigger) ── */
+.size-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.size-label-row .form-label {
+  margin-bottom: 0;
+}
+
+.size-chart-trigger-btn {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+
+.size-chart-trigger-btn:hover {
+  color: var(--cream);
+}
+
+/* ── Size Chart Overlay (inside modal-card) ── */
+.size-chart-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  border-radius: inherit;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: modalFadeIn 0.18s ease-out;
+}
+
+.size-chart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.size-chart-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.size-chart-unit {
+  font-size: 0.76rem;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+.size-chart-close-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+.size-chart-close-btn:hover {
+  background: var(--bg-3);
+  color: var(--cream);
+}
+
+.size-chart-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  border: 1px solid var(--border-md);
+  margin-bottom: 16px;
+}
+
+.size-chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.size-chart-table thead {
+  background: var(--surface);
+}
+
+.size-chart-table th {
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border-md);
+}
+
+.size-chart-table th:first-child,
+.size-chart-table td:first-child {
+  text-align: left;
+  padding-left: 16px;
+}
+
+.size-chart-table td {
+  padding: 13px 16px;
+  text-align: center;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.size-chart-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.size-chart-table tbody tr.size-chart-row-active {
+  background: rgba(122, 106, 82, 0.06);
+}
+
+.size-chart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--cream);
+  letter-spacing: 0.02em;
+}
+
+.size-chart-badge.active {
+  background: var(--cream);
+  color: #fff;
+  border-color: var(--cream);
+}
+
+.size-chart-note {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.size-chart-confirm-btn {
+  display: block;
+  width: 100%;
+  background: var(--cream);
+  color: var(--bg);
+  border: none;
+  border-radius: 9999px;
+  padding: 13px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
+  text-align: center;
+  touch-action: manipulation;
+  margin-top: auto;
+}
+
+.size-chart-confirm-btn:hover {
+  background: var(--cream-2);
+  transform: translateY(-1px);
+}
+
 /* ==========================================================================
    MULTI-PAGE LAYOUT & NAVIGATION EXTENSIONS
    ========================================================================== */
@@ -1659,6 +1855,15 @@ button {
   height: 2px;
   background: var(--accent);
   border-radius: 2px;
+}
+
+/* Mobile Header Actions (Hidden on Desktop) */
+.nav-mobile-actions {
+  display: none;
+}
+
+.nav-mobile-preorder-btn {
+  display: none;
 }
 
 .nav-mobile-toggle {
@@ -1715,22 +1920,67 @@ button {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
   margin-bottom: 24px;
 }
 
 .mobile-link {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--text-2);
   text-decoration: none;
   display: block;
-  padding: 4px 0;
+  padding: 12px 0;
+  border-radius: 8px;
+  transition: color 0.15s ease;
 }
 
+.mobile-link:hover,
 .mobile-link.active {
-  color: var(--accent);
+  color: var(--cream);
   font-weight: 600;
+}
+
+/* Hamburger menu label */
+.hamburger-menu-label {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  display: none;
+  line-height: 1;
+  margin-top: -1px;
+}
+
+/* Mobile social link in nav */
+.nav-mobile-social {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.nav-mobile-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+  touch-action: manipulation;
+}
+
+.nav-mobile-social-link:hover {
+  color: var(--cream);
+}
+
+.nav-mobile-cta-wrap {
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
 }
 
 .footer-origin-badge {
@@ -3319,8 +3569,51 @@ button {
   .nav-links-wrap {
     display: none;
   }
+  .nav-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-mobile-preorder-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+    color: var(--bg);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 9999px;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: background 0.2s ease, transform 0.15s ease;
+    touch-action: manipulation;
+  }
+  .nav-mobile-preorder-btn:hover {
+    background: var(--cream-2);
+  }
+  .nav-mobile-preorder-btn:active {
+    transform: scale(0.97);
+  }
   .nav-mobile-toggle {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0;
+  }
+  .hamburger-menu-label {
+    display: block;
   }
   .nav-mobile-dropdown {
     max-height: calc(100vh - 60px);
@@ -3341,6 +3634,24 @@ button {
   /* Global Container & Spacing */
   .container {
     padding-inline: 16px;
+  }
+  .nav-logo {
+    font-size: 1.25rem;
+    gap: 8px;
+  }
+  .nav-logo img {
+    height: 24px;
+  }
+  .nav-mobile-actions {
+    gap: 8px;
+  }
+  .nav-mobile-preorder-btn {
+    font-size: 0.78rem;
+    padding: 7px 12px;
+  }
+  .nav-mobile-toggle {
+    width: 48px;
+    height: 48px;
   }
 
   .topbar {
@@ -3908,18 +4219,40 @@ button {
   .modal-size-pills {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
+    gap: 6px;
     width: 100%;
   }
   .modal-size-pill {
     width: 100%;
     min-width: 0;
-    height: 44px;
-    min-height: 44px;
-    font-size: 0.9rem;
+    height: 48px;
+    min-height: 48px;
+    font-size: 0.92rem;
+    font-weight: 700;
     padding: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     box-sizing: border-box;
+  }
+  /* Size chart overlay on mobile */
+  .size-chart-overlay {
+    padding: 22px 18px 20px;
+    border-radius: 24px 24px 0 0;
+  }
+  .size-chart-title {
+    font-size: 1.3rem;
+  }
+  .size-chart-table th,
+  .size-chart-table td {
+    padding: 11px 12px;
+    font-size: 0.85rem;
+  }
+  .size-chart-confirm-btn {
+    min-height: 50px;
+    font-size: 0.95rem;
+  }
+  .size-chart-trigger-btn {
+    font-size: 0.8rem;
+    padding: 6px 0;
   }
   .modal-submit-btn {
     width: 100%;
@@ -4061,6 +4394,32 @@ button {
 
 /* ── 360px & Below (Compact Phones: iPhone SE / 320px - 360px) ── */
 @media (max-width: 360px) {
+  .container {
+    padding-inline: 10px;
+  }
+  .nav-logo {
+    font-size: 1.15rem;
+    gap: 6px;
+  }
+  .nav-logo img {
+    height: 22px;
+  }
+  .nav-mobile-actions {
+    gap: 6px;
+  }
+  .nav-mobile-preorder-btn {
+    font-size: 0.72rem;
+    padding: 6px 9px;
+    letter-spacing: 0;
+  }
+  .nav-mobile-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+  }
+  .hamburger-menu-label {
+    font-size: 0.52rem;
+  }
   .hero-headline {
     font-size: 1.9rem;
   }

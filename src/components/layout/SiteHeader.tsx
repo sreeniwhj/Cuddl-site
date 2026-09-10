@@ -110,18 +110,30 @@ export function SiteHeader() {
               </button>
             </div>
 
-            {/* Mobile Hamburger Button */}
-            <button
-              type="button"
-              className={`nav-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span className="hamburger-line"></span>
-              <span className="hamburger-line"></span>
-              <span className="hamburger-line"></span>
-            </button>
+            {/* Mobile Header Actions (Preorder button + Hamburger Menu) */}
+            <div className="nav-mobile-actions">
+              <button
+                type="button"
+                className="nav-mobile-preorder-btn"
+                id="mobile-nav-preorder-btn"
+                onClick={() => openWaitlist()}
+              >
+                Preorder Now
+              </button>
+
+              <button
+                type="button"
+                className={`nav-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-menu-label">Menu</span>
+              </button>
+            </div>
           </nav>
         </div>
 
@@ -184,6 +196,22 @@ export function SiteHeader() {
                 >
                   Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
                 </button>
+                <div className="nav-mobile-social">
+                  <a
+                    href="https://www.instagram.com/cuddlwear?stkn=NnZkN3BwMnZra2Ew"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nav-mobile-social-link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <circle cx="12" cy="12" r="4"/>
+                      <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <span>Instagram</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -9,6 +9,15 @@ export interface ColorwayOption {
 
 export const AVAILABLE_SIZES = ['S', 'M', 'L', 'XL', 'XXL'] as const;
 
+// Exact CuddlWear size chart — measurements in inches
+const SIZE_CHART = [
+  { size: 'S',   length: 27, chest: 24, sleeve: 24 },
+  { size: 'M',   length: 27, chest: 25, sleeve: 24 },
+  { size: 'L',   length: 28, chest: 27, sleeve: 25 },
+  { size: 'XL',  length: 29, chest: 28, sleeve: 26 },
+  { size: 'XXL', length: 30, chest: 30, sleeve: 28 },
+];
+
 interface WaitlistModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -44,6 +53,7 @@ export function WaitlistModal({
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showSizeChart, setShowSizeChart] = useState(false);
   const lastSubmitTimeRef = useRef<number>(0);
 
   const resetForm = useCallback(() => {
@@ -66,27 +76,36 @@ export function WaitlistModal({
         setSize(initialSize);
       }
       setErrors({});
+      setShowSizeChart(false);
     }
   }, [isOpen, initialColorway, initialSize]);
 
   // Handle closing modal
   const handleClose = useCallback(() => {
+    if (showSizeChart) {
+      setShowSizeChart(false);
+      return;
+    }
     if (isSuccess) {
       resetForm();
     }
     onClose();
-  }, [isSuccess, resetForm, onClose]);
+  }, [isSuccess, showSizeChart, resetForm, onClose]);
 
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        handleClose();
+        if (showSizeChart) {
+          setShowSizeChart(false);
+        } else {
+          handleClose();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, handleClose]);
+  }, [isOpen, showSizeChart, handleClose]);
 
   if (!isOpen) return null;
 
@@ -167,14 +186,14 @@ export function WaitlistModal({
         // Backend insert failed -> retain form data and show clean error
         setErrors((prev) => ({
           ...prev,
-          server: "We couldn’t save your interest right now. Please try again.",
+          server: "We couldn't save your interest right now. Please try again.",
         }));
       }
     } catch (err) {
       console.error('[CuddlWear Waitlist] Submission error:', err);
       setErrors((prev) => ({
         ...prev,
-        server: "We couldn’t save your interest right now. Please try again.",
+        server: "We couldn't save your interest right now. Please try again.",
       }));
     } finally {
       setIsSubmitting(false);
@@ -195,6 +214,71 @@ export function WaitlistModal({
       aria-labelledby="waitlist-title"
     >
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+
+        {/* ── Size Chart Overlay ── */}
+        {showSizeChart && (
+          <div
+            className="size-chart-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Size Chart"
+          >
+            <div className="size-chart-header">
+              <div>
+                <h3 className="size-chart-title">Size Chart</h3>
+                <p className="size-chart-unit">All measurements in inches</p>
+              </div>
+              <button
+                type="button"
+                className="size-chart-close-btn"
+                aria-label="Close size chart"
+                onClick={() => setShowSizeChart(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="size-chart-table-wrap">
+              <table className="size-chart-table">
+                <thead>
+                  <tr>
+                    <th>Size</th>
+                    <th>Length</th>
+                    <th>Chest</th>
+                    <th>Sleeve</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SIZE_CHART.map((row) => (
+                    <tr
+                      key={row.size}
+                      className={size === row.size ? 'size-chart-row-active' : ''}
+                    >
+                      <td className="size-chart-size-cell">
+                        <span className={`size-chart-badge ${size === row.size ? 'active' : ''}`}>
+                          {row.size}
+                        </span>
+                      </td>
+                      <td>{row.length}"</td>
+                      <td>{row.chest}"</td>
+                      <td>{row.sleeve}"</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="size-chart-note">
+              Measurements are of the garment, not body measurements. For a relaxed fit, choose your usual size.
+            </p>
+            <button
+              type="button"
+              className="size-chart-confirm-btn"
+              onClick={() => setShowSizeChart(false)}
+            >
+              Got it — back to preorder
+            </button>
+          </div>
+        )}
+
         {/* Close button */}
         <button className="modal-close-btn" onClick={handleClose} aria-label="Close modal">
           &times;
@@ -316,11 +400,21 @@ export function WaitlistModal({
                 </div>
               </div>
 
-              {/* Selected Size */}
+              {/* Selected Size — with Size Chart button */}
               <div className="form-group">
-                <label className="form-label">
-                  Selected Size: <strong>{size}</strong>
-                </label>
+                <div className="size-label-row">
+                  <label className="form-label">
+                    Selected Size: <strong>{size}</strong>
+                  </label>
+                  <button
+                    type="button"
+                    className="size-chart-trigger-btn"
+                    onClick={() => setShowSizeChart(true)}
+                    aria-label="View size chart"
+                  >
+                    Size Chart
+                  </button>
+                </div>
                 <div className="modal-size-pills">
                   {AVAILABLE_SIZES.map((sz) => (
                     <button
@@ -387,7 +481,7 @@ export function WaitlistModal({
           <div className="modal-success-view">
             <div className="success-icon">&#10003;</div>
             <h2 className="success-title">Your pre-order reservation is received.</h2>
-            <p className="success-subtitle">We’ll contact you when pre-orders are ready for dispatch.</p>
+            <p className="success-subtitle">We'll contact you when pre-orders are ready for dispatch.</p>
 
             <div className="success-details-card">
               <div className="success-detail-row">
