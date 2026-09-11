@@ -293,9 +293,9 @@ export function WaitlistModal({
               </h2>
               <p className="modal-desc">
                 Reserve your spot for the first limited production run of the CuddlWear Hoodie at{' '}
-                <strong>&#x20B9;1,999</strong>{' '}
+                <strong>&#x20B9;1,699</strong>{' '}
                 <s style={{ opacity: 0.6, fontWeight: 400, fontSize: '0.9em' }}>&#x20B9;2,799</s>{' '}
-                <span className="price-badge" style={{ verticalAlign: 'middle' }}>29% off</span>.
+                <span className="price-badge" style={{ verticalAlign: 'middle' }}>39% off</span>.
               </p>
             </div>
 
@@ -473,7 +473,7 @@ export function WaitlistModal({
                 className="btn-primary modal-submit-btn"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Reserving your spot...' : <>Preorder Now — &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s></>}
+                {isSubmitting ? 'Reserving your spot...' : <>Preorder Now — &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s></>}
               </button>
             </form>
           </>
@@ -495,7 +495,7 @@ export function WaitlistModal({
               <div className="success-detail-row">
                 <span className="success-detail-key">Price</span>
                 <span className="success-detail-val">
-                  &#x20B9;1,999{' '}
+                  &#x20B9;1,699{' '}
                   <s style={{ opacity: 0.55, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
                 </span>
               </div>

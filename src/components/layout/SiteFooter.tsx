@@ -61,7 +61,7 @@ export function SiteFooter() {
                 className="footer-link-btn"
                 onClick={() => openWaitlist()}
               >
-                Price: &#x20B9;1,999 <s style={{ opacity: 0.55, fontSize: '0.85em' }}>&#x20B9;2,799</s> &mdash; 29% off
+                Price: &#x20B9;1,699 <s style={{ opacity: 0.55, fontSize: '0.85em' }}>&#x20B9;2,799</s> &mdash; 39% off
               </button>
             </div>
           </div>
@@ -73,7 +73,13 @@ export function SiteFooter() {
               We work quickly to ship your order as soon as possible. Once your order ships, you&apos;ll receive an email with further information. Delivery times vary depending on your location.
             </div>
             <div className="footer-links" style={{ marginTop: '16px' }}>
-              <a href="mailto:hello@cuddlwear.in">hello@cuddlwear.in</a>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=permissionwear3@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                permissionwear3@gmail.com
+              </a>
             </div>
           </div>
         </div>
@@ -83,7 +89,13 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} CuddlWear. All rights reserved. Made in Bengaluru, India.
           </div>
           <div className="footer-social">
-            <a href="mailto:hello@cuddlwear.in">hello@cuddlwear.in</a>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=permissionwear3@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              permissionwear3@gmail.com
+            </a>
             <a
               href="https://www.instagram.com/cuddlwear?stkn=NnZkN3BwMnZra2Ew"
               target="_blank"

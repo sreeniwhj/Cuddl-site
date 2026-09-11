@@ -106,7 +106,7 @@ export function SiteHeader() {
                 id="nav-preorder-btn"
                 onClick={() => openWaitlist()}
               >
-                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
             </div>
 
@@ -194,7 +194,7 @@ export function SiteHeader() {
                     openWaitlist();
                   }}
                 >
-                  Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                  Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
                 </button>
                 <div className="nav-mobile-social">
                   <a

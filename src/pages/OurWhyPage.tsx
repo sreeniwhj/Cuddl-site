@@ -65,9 +65,9 @@ export function OurWhyPage() {
                   <h3>Honest Pricing</h3>
                   <p>
                     <span className="price-sale-group" style={{ display: 'inline-flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <strong>&#x20B9;1,999</strong>
+                      <strong>&#x20B9;1,699</strong>
                       <s className="price-was">&#x20B9;2,799</s>
-                      <span className="price-badge">29% off</span>
+                      <span className="price-badge">39% off</span>
                     </span>{' '}
                     — quality made accessible.
                   </p>
@@ -106,7 +106,7 @@ export function OurWhyPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
               <Link to="/shop" className="btn-ghost">
                 View the 4 colours

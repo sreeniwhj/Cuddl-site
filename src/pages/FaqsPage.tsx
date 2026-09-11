@@ -62,7 +62,7 @@ const FAQS: FAQItem[] = [
     id: 'faq-9',
     category: 'Ordering & Pre-orders',
     question: 'How does pre-ordering work?',
-    answer: 'Pre-ordering reserves your hoodie for our limited first production batch. As soon as the first run is ready for fulfillment, we will send an email invite allowing you to complete your order at the guaranteed launch price of ₹1,999 (was ₹2,799 — 29% off).'
+    answer: 'Pre-ordering reserves your hoodie for our limited first production batch. As soon as the first run is ready for fulfillment, we will send an email invite allowing you to complete your order at the guaranteed launch price of ₹1,699 (was ₹2,799 — 39% off).'
   },
   {
     id: 'faq-10',
@@ -172,8 +172,13 @@ export function FaqsPage() {
               <h3>Still have a question?</h3>
               <p>We are happy to answer any questions about sizing, materials, or delivery.</p>
             </div>
-            <a href="mailto:hello@cuddlwear.in" className="btn-ghost">
-              Email hello@cuddlwear.in
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=permissionwear3@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost"
+            >
+              permissionwear3@gmail.com
             </a>
           </div>
         </div>
@@ -191,9 +196,9 @@ export function FaqsPage() {
             <p className="cta-subtitle">
               Pre-order your hoodie today.{' '}
               <span className="price-sale-group" style={{ display: 'inline-flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <strong>&#x20B9;1,999</strong>
+                <strong>&#x20B9;1,699</strong>
                 <s className="price-was">&#x20B9;2,799</s>
-                <span className="price-badge">29% off</span>
+                <span className="price-badge">39% off</span>
               </span>
             </p>
             <div className="cta-actions">
@@ -202,7 +207,7 @@ export function FaqsPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
               <Link to="/shop" className="btn-ghost">
                 Shop 4 Colours

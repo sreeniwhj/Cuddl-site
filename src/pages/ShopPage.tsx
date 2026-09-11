@@ -25,9 +25,9 @@ export function ShopPage() {
               <div className="shop-meta-item">
                 <strong>Price:</strong>{' '}
                 <span className="price-sale-group" style={{ display: 'inline-flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <strong>&#x20B9;1,999</strong>
+                  <strong>&#x20B9;1,699</strong>
                   <s className="price-was">&#x20B9;2,799</s>
-                  <span className="price-badge">29% off</span>
+                  <span className="price-badge">39% off</span>
                 </span>
               </div>
               <div className="shop-meta-divider">&middot;</div>
@@ -69,9 +69,9 @@ export function ShopPage() {
                       <p className="product-card-tagline">{product.tagline}</p>
                     </div>
                     <div className="product-card-price">
-                      <span>&#x20B9;1,999</span>
+                      <span>&#x20B9;1,699</span>
                       <span className="price-was">&#x20B9;2,799</span>
-                      <span className="price-badge" style={{ fontSize: '0.6rem' }}>29% off</span>
+                      <span className="price-badge" style={{ fontSize: '0.6rem' }}>39% off</span>
                     </div>
                   </div>
 
@@ -143,7 +143,7 @@ export function ShopPage() {
                 className="btn-primary"
                 onClick={() => openWaitlist()}
               >
-                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
             </div>
           </div>

@@ -62,8 +62,8 @@ export function HomePage() {
             </div>
             <div>
               <div className="hero-stat-value price-stat-value">
-                <span>&#x20B9;1,999</span>
-                <span className="price-badge">29% off</span>
+                <span>&#x20B9;1,699</span>
+                <span className="price-badge">39% off</span>
               </div>
               <div className="hero-stat-label">Launch price</div>
             </div>
@@ -124,9 +124,9 @@ export function HomePage() {
             </div>
             <div className="colorway-right-wrap">
               <div className="colorway-price-display">
-                <span className="price-main">&#x20B9;1,999</span>
+                <span className="price-main">&#x20B9;1,699</span>
                 <span className="price-was">&#x20B9;2,799</span>
-                <span className="price-badge">29% off</span>
+                <span className="price-badge">39% off</span>
               </div>
               <div className="colorway-pill-wrap" role="group" aria-label="Hoodie colorway selection">
                 {COLORWAYS.map((cw) => (
@@ -158,7 +158,7 @@ export function HomePage() {
           <span className="marquee-item">&middot;</span>
           <span className="marquee-item">Grounding Construction</span>
           <span className="marquee-item">&middot;</span>
-          <span className="marquee-item">&#x20B9;1,999</span>
+          <span className="marquee-item">&#x20B9;1,699</span>
           <span className="marquee-item">&middot;</span>
           <span className="marquee-item">Engineered for Focus</span>
           <span className="marquee-item">&middot;</span>
@@ -172,7 +172,7 @@ export function HomePage() {
           <span className="marquee-item">&middot;</span>
           <span className="marquee-item">Grounding Construction</span>
           <span className="marquee-item">&middot;</span>
-          <span className="marquee-item">&#x20B9;1,999</span>
+          <span className="marquee-item">&#x20B9;1,699</span>
           <span className="marquee-item">&middot;</span>
           <span className="marquee-item">Engineered for Focus</span>
           <span className="marquee-item">&middot;</span>
@@ -365,9 +365,9 @@ export function HomePage() {
                   <span className="spec-key">Price</span>
                   <span className="spec-val">
                     <span className="price-sale-group">
-                      <strong>&#x20B9;1,999</strong>
+                      <strong>&#x20B9;1,699</strong>
                       <s className="price-was">&#x20B9;2,799</s>
-                      <span className="price-badge">29% off</span>
+                      <span className="price-badge">39% off</span>
                     </span>
                   </span>
                 </div>
@@ -437,9 +437,9 @@ export function HomePage() {
               We&apos;re taking pre-orders now for our first production run across four curated colours.
             </p>
             <div className="cta-price-block reveal" style={{ transitionDelay: '0.22s' }}>
-              <span className="cta-price-amount">&#x20B9;1,999</span>
+              <span className="cta-price-amount">&#x20B9;1,699</span>
               <span className="price-was" style={{ fontSize: '1rem' }}>&#x20B9;2,799</span>
-              <span className="price-badge">29% off</span>
+              <span className="price-badge">39% off</span>
             </div>
             <div className="cta-actions reveal" style={{ transitionDelay: '0.28s' }}>
               <button
@@ -448,9 +448,15 @@ export function HomePage() {
                 id="main-preorder-btn"
                 onClick={() => openWaitlist()}
               >
-                Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+                Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
               </button>
-              <a href="mailto:hello@cuddlwear.in" className="btn-ghost" id="contact-btn">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=permissionwear3@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost"
+                id="contact-btn"
+              >
                 Talk to us
               </a>
             </div>

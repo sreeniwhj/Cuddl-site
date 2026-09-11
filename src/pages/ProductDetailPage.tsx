@@ -35,9 +35,9 @@ function ProductInfo({ product }: { product: ColorwayProduct }) {
 
       <div className="pdp-price-row">
         <div className="pdp-price-group">
-          <span className="pdp-price">&#x20B9;1,999</span>
+          <span className="pdp-price">&#x20B9;1,699</span>
           <span className="price-was">&#x20B9;2,799</span>
-          <span className="price-badge">29% off</span>
+          <span className="price-badge">39% off</span>
         </div>
         <span className="pdp-price-tax">All taxes included</span>
       </div>
@@ -107,7 +107,7 @@ function ProductInfo({ product }: { product: ColorwayProduct }) {
           className="btn-primary pdp-cta-btn"
           onClick={handlePreorder}
         >
-          Preorder Now &#8212; &#x20B9;1,999 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
+          Preorder Now &#8212; &#x20B9;1,699 <s style={{ opacity: 0.5, fontWeight: 400, fontSize: '0.85em' }}>&#x20B9;2,799</s>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M1.75 7H12.25M7 1.75L12.25 7L7 12.25" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -344,7 +344,7 @@ export function ProductDetailPage() {
                   <span className="other-color-swatch" style={{ background: cw.bg }}></span>
                   <span className="other-color-name">{cw.name}</span>
                   <span className="other-color-price">
-                    <span>&#x20B9;1,999</span>
+                    <span>&#x20B9;1,699</span>
                     <s className="price-was" style={{ fontSize: '0.75em' }}>&#x20B9;2,799</s>
                   </span>
                 </div>
